@@ -42,9 +42,6 @@ public class RefreshRedisConfigFile implements RefreshFile{
 							else
 								redisConfig.setIfCluster(false);
 						}
-					}else if(redisConfig.DATABASE_KEY.equals(entry.getKey())){
-						if(Strings.isNullOrEmpty(entry.getValue()))
-							redisConfig.setDatabase(Integer.valueOf(entry.getValue()));
 					}else{
 						if(!Strings.isNullOrEmpty(entry.getValue()))
 							_hostAndPort.put(entry.getKey(), entry.getValue());

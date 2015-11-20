@@ -19,12 +19,10 @@ public class RedisConfig implements InitializingBean{
 	boolean ifCluster=true;//默认集群
 	boolean ifWatch=false;//是否监听文件更改
 	
-	//非集群配置
-	int database = 0;//单点
 	//非集群连接池配置信息
 	Integer maxActive=-1;//一个pool分配最多jedis实例，-1 表示无 限制
-	Integer maxIdle=10;//一个pool最大空闲连接数
-	Integer maxWait=(1000*100);//最大等待时间
+	Integer maxIdle=50;//一个pool最大空闲连接数
+	Integer maxWait=(1000*6000);//最大等待时间
 	boolean testOnBorrow=true;//取出jedis实例前是否验证实例可用，验证，确保每个jedis实例可连接
 	
 	@Override
@@ -68,14 +66,6 @@ public class RedisConfig implements InitializingBean{
 
 	public void setIfWatch(boolean ifWatch) {
 		this.ifWatch = ifWatch;
-	}
-
-	public int getDatabase() {
-		return database;
-	}
-
-	public void setDatabase(int database) {
-		this.database = database;
 	}
 
 	public String getConfigpath() {

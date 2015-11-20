@@ -13,7 +13,7 @@
 		<property name="configpath" value="/redis.properties"/>
 	</bean>
 	
-	<bean id="redisManagerCustom" class="com.plugins.redis.RedisManagerFactory">
+	<bean id="redisManager" class="com.plugins.redis.RedisManagerFactory">
 		<property name="redisConfig" ref="redisConfig"/>
 	</bean>
 </beans>

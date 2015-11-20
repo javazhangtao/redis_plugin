@@ -7,10 +7,12 @@ import com.dyuproject.protostuff.ProtostuffIOUtil;
 import com.dyuproject.protostuff.Schema;
 import com.dyuproject.protostuff.runtime.RuntimeSchema;
 
+import redis.clients.jedis.exceptions.JedisException;
+
 public class ProtocbuffSerializer implements GenericSerializer{
 	
 	@Override
-	public <T> byte[] serialize(T obj) throws Exception {
+	public <T> byte[] serialize(T obj) throws JedisException {
 		@SuppressWarnings("unchecked")
 		Class<T> cls = (Class<T>) obj.getClass();
 		Schema<T> schema = (Schema<T>)RuntimeSchema.createFrom(cls);
@@ -25,7 +27,7 @@ public class ProtocbuffSerializer implements GenericSerializer{
 	}
 
 	@Override
-	public <T> T deserialize(byte[] bytes, Class<T> cls) throws Exception {
+	public <T> T deserialize(byte[] bytes, Class<T> cls) throws JedisException {
 		if(null==bytes)
 			return null ;
 		T message = (T) new ObjenesisStd(true).newInstance(cls);

@@ -1,7 +1,8 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'maven'
-
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
 group ='com.redis.plugins'
 version = '1.0'
 
@@ -11,7 +12,9 @@ compileJava {
 }
 
 repositories {
-    mavenCentral()
+   maven {
+        url "http://192.168.1.103/nexus/content/groups/public/"
+    }
 }
 
 dependencies {
@@ -27,4 +30,62 @@ dependencies {
     compile 'org.springframework:spring-context-support:4.2.0.RELEASE'
     testCompile 'junit:junit:4.+'
 }
+
+
+uploadArchives {
+	repositories {
+		mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+            repository(url: "http://192.168.1.103/nexus/content/groups/public/"){
+            	authentication(userName: "admin", password: "password")
+            }
+            pom.project {
+            	packaging 'jar'
+            	artifactId 'redis-plugins'
+            	groupId 'com.redis.plugins'
+            	version '1.0'
+            	description 'tool plugin for redis.'
+            	url 'https://github.com/javazhangtao/redis_plugin.git'
+            	
+            	scm {  
+                    url 'scm:git@github.com:javazhangtao/redis_plugin.git'  
+                    connection 'scm:git@github.com:javazhangtao/redis_plugin.git'  
+                    developerConnection 'git@github.com:javazhangtao/redis_plugin.git'  
+                }
+                
+            	licenses {  
+                    license {  
+                        name 'The Apache Software License, Version 2.0'  
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'  
+                        distribution 'repo'  
+                    }  
+                }
+                
+            	developers {  
+                    developer {  
+                        id 'zhangtao'  
+                        name 'Zhang tao'  
+                    }  
+                }
+            }
+		}
+	}
+}
+
+task sourcesJar(type: Jar) {  
+    classifier = 'sources'  
+    from sourceSets.main.allSource  
+}
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+artifacts {  
+    archives jar  
+    archives sourcesJar  
+}
+
+signing {  
+    sign configurations.archives  
+    required = false
+} 
 

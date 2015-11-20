@@ -9,12 +9,12 @@ import com.plugins.redis.suppor.config.RedisConfig;
 /**
  *	redis工具生产工厂
  */
-public class RedisManagerFactory implements FactoryBean<RedisManagerCustom>{
+public class RedisManagerFactory implements FactoryBean<RedisManager>{
 
 	private RedisConfig redisConfig;
 
 	@Override
-	public RedisManagerCustom getObject() throws Exception {
+	public RedisManager getObject() throws Exception {
 		if(redisConfig.isIfCluster())
 			return new ClusterManager(redisConfig); 
 		else 
